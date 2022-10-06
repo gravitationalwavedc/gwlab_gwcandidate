@@ -1,0 +1,17 @@
+[run]
+omit =
+    # Omit the virtual env
+    */venv/*
+
+    # Ignore manage.py files
+    ./*manage.py
+
+    # Ignore settings.py files
+    gw_gwcandidate/*settings.py
+
+    # Ignore local.py if one exists
+    gw_gwcandidate/local.py
+
+    # Ignore environment and base settings
+    gw_gwcandidate/base.py
+    gw_gwcandidate/environment.py
