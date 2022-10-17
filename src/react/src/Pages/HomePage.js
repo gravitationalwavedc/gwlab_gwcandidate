@@ -1,8 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { graphql, createFragmentContainer } from 'react-relay';
 import { Container } from 'react-bootstrap';
 
-const HomePage = () => <Container>
-    This is GWCandidate
-</Container>
+const HomePage = ({data}) => <Container>
+        This is GWCandidate
+</Container>;
 
-export default HomePage
+
+export default HomePage;

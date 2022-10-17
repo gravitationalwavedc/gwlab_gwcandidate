@@ -1,5 +1,4 @@
 django<4
-graphene-django
 pip-tools
 django-filter
 django-cors-headers
@@ -13,3 +12,4 @@ flake8
 coverage<5
 responses
 pyhumps
+pymongo
