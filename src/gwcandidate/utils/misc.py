@@ -1,6 +1,7 @@
 import re
 from mongoengine.errors import ValidationError
 
+
 def validate_name(name):
     if len(name) < 5:
         raise ValidationError('Candidate name must be at least 5 characters long.')

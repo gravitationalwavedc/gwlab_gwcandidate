@@ -2,17 +2,34 @@ import graphene
 from graphene import relay
 from graphene_mongo import MongoengineObjectType, MongoengineConnectionField
 
-from .models import Candidate, SearchInfo, ViterbiInfo
+from .models import Candidate, SearchInfo, ViterbiInfo, SourceInfo, BinaryInfo
 from .utils.auth.lookup_users import request_lookup_users
+
+
+class BinaryInfoType(MongoengineObjectType):
+    class Meta:
+        model = BinaryInfo
+
+
+class SourceInfoType(MongoengineObjectType):
+    class Meta:
+        model = SourceInfo
 
 
 class ViterbiInfoType(MongoengineObjectType):
     class Meta:
         model = ViterbiInfo
 
+
 class SearchInfoType(MongoengineObjectType):
     class Meta:
         model = SearchInfo
+
+    detectors = graphene.String()
+
+    def resolve_detectors(parent, info):
+        print(parent.detectors)
+        return ', '.join(parent.detectors)
 
 
 class CandidateNode(MongoengineObjectType):
@@ -20,7 +37,7 @@ class CandidateNode(MongoengineObjectType):
         model = Candidate
         interfaces = (relay.Node,)
         required_fields = ('user_id',)
-    
+
     user = graphene.String()
 
     def resolve_user(parent, info):
@@ -31,8 +48,10 @@ class CandidateNode(MongoengineObjectType):
 
 
 class Query(graphene.ObjectType):
+    node = relay.Node.Field()
     candidate = relay.Node.Field(CandidateNode)
     candidates = MongoengineConnectionField(CandidateNode)
+
 
 class TestMutation(relay.ClientIDMutation):
 

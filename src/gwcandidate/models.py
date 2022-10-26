@@ -1,7 +1,6 @@
-from mongoengine import Document, DynamicDocument, DynamicEmbeddedDocument
+from mongoengine import DynamicDocument, DynamicEmbeddedDocument
 from mongoengine.fields import (
     StringField,
-    BooleanField,
     FloatField,
     ListField,
     IntField,
@@ -31,18 +30,28 @@ DETECTOR_CHOICES = (
     'G1'
 )
 
+MODULE_CHOICES = (
+    ('viterbi', 'Viterbi'),
+)
+
+
 class ViterbiInfo(DynamicEmbeddedDocument):
     coherence_time = FloatField(required=True)
     likelihood = FloatField(required=True)
     score = FloatField(required=True)
     threshold = FloatField(required=True)
 
-MODULE_INFO_CHOICES = (
+
+OTHER_INFO_CHOICES = (
     ViterbiInfo,
 )
 
 
 class SearchInfo(DynamicEmbeddedDocument):
+    module = StringField(
+        required=True,
+        choices=MODULE_CHOICES
+    )
     source_dataset = StringField(
         required=True,
         choices=SOURCE_DATASET_CHOICES
@@ -52,13 +61,12 @@ class SearchInfo(DynamicEmbeddedDocument):
         required=True,
         choices=DETECTOR_CHOICES
     )
-    search_start_time = FloatField(required=True)
-    search_end_time = FloatField(required=True)
+    start_time = FloatField(required=True)
+    end_time = FloatField(required=True)
     detection_statistic = FloatField(required=True)
 
-    module = GenericEmbeddedDocumentField(
-        required=True,
-        choices=MODULE_INFO_CHOICES
+    other = GenericEmbeddedDocumentField(
+        choices=OTHER_INFO_CHOICES
     )
 
 
@@ -86,7 +94,6 @@ class Candidate(DynamicDocument):
 
     name = StringField(validation=validate_name)
     description = StringField()
-
 
     search = EmbeddedDocumentField(SearchInfo)
     source = EmbeddedDocumentField(SourceInfo)

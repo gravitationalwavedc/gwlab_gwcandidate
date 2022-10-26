@@ -3,8 +3,9 @@ import { Card } from 'react-bootstrap';
 import Link from 'found/Link';
 import { HiDocumentText} from 'react-icons/hi';
 
-const CandidateCard = ({node, match, router}) =>
-    <Card className="gwlab-job-card">
+const CandidateCard = ({node, match, router}) =>{
+    console.log(node);
+    return <Card className="gwlab-job-card">
         <Card.Body>
             <Card.Title>
                 {node.name} 
@@ -26,6 +27,6 @@ const CandidateCard = ({node, match, router}) =>
                     View
             </Link>
         </Card.Footer>
-    </Card>;
+    </Card>;};
 
 export default CandidateCard;

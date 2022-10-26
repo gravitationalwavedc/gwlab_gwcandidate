@@ -39,6 +39,20 @@ function getRoutes() {
                 environment={harnessApi.getEnvironment('gwcandidate')}
                 Component={MyCandidates}
                 render={handleRender}/>
+            <Route
+                path="candidate/:candidateId/"
+                environment={harnessApi.getEnvironment('gwcandidate')}
+                Component={ViewCandidate}
+                query={graphql`
+                    query Routes_ViewCandidate_Query ($candidateId: ID!){
+                      ...ViewCandidate_data @arguments(candidateId: $candidateId)
+                    }
+                `}
+                prepareVariables={(params) => ({
+                    candidateId: params.candidateId
+                })}
+                render={handleRender}
+            />
         </Route>
     );
 }
