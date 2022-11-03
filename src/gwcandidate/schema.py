@@ -39,12 +39,16 @@ class CandidateNode(MongoengineObjectType):
         required_fields = ('user_id',)
 
     user = graphene.String()
+    last_updated = graphene.String()
 
     def resolve_user(parent, info):
         success, users = request_lookup_users([parent.user_id], info.context.user.user_id)
         if success and users:
             return f"{users[0]['firstName']} {users[0]['lastName']}"
         return "Unknown User"
+
+    def resolve_last_updated(parent, info):
+        return parent.last_updated.strftime("%Y-%m-%d %H:%M:%S UTC")
 
 
 class Query(graphene.ObjectType):

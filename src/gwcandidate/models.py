@@ -4,10 +4,13 @@ from mongoengine.fields import (
     FloatField,
     ListField,
     IntField,
+    DateTimeField,
+    ReferenceField,
     EmbeddedDocumentField,
     GenericEmbeddedDocumentField
 )
-from .utils.misc import validate_name
+from .handlers import update_last_updated
+from .utils.misc import validate_name, utc_time
 
 
 SOURCE_DATASET_CHOICES = (
@@ -88,7 +91,10 @@ class SourceInfo(DynamicEmbeddedDocument):
     binary = EmbeddedDocumentField(BinaryInfo)
 
 
+@update_last_updated.apply
 class Candidate(DynamicDocument):
+    created = DateTimeField(default=utc_time)
+    last_updated = DateTimeField(default=utc_time)
     user_id = IntField(required=True)
     job_id = IntField()
 
@@ -97,3 +103,11 @@ class Candidate(DynamicDocument):
 
     search = EmbeddedDocumentField(SearchInfo)
     source = EmbeddedDocumentField(SourceInfo)
+
+
+class CandidateGroup(DynamicDocument):
+    created = DateTimeField(default=utc_time)
+    last_updated = DateTimeField(default=utc_time)
+    name = StringField(validation=validate_name)
+    description = StringField()
+    candidates = ListField(ReferenceField(Candidate))

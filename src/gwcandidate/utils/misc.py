@@ -1,4 +1,5 @@
 import re
+from datetime import datetime, timezone
 from mongoengine.errors import ValidationError
 
 
@@ -12,3 +13,7 @@ def validate_name(name):
     pattern = re.compile(r"^[0-9a-z_-]+\Z", flags=re.IGNORECASE | re.ASCII)
     if not pattern.match(name):
         raise ValidationError('Candidate name must not contain any spaces or special characters.')
+
+
+def utc_time():
+    return datetime.now(timezone.utc)

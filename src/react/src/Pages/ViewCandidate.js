@@ -33,6 +33,7 @@ export default createFragmentContainer(ViewCandidate,
                     user
                     name
                     description
+                    lastUpdated
                     ...Parameters_candidateData
                 }
             }
