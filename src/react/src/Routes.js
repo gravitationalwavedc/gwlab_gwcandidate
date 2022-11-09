@@ -1,18 +1,19 @@
 import React from 'react';
-import {Route} from 'found';
+import {Route, RedirectException} from 'found';
 import {graphql} from 'react-relay';
 import {harnessApi} from './index';
 import Loading from './Components/Loading';
 import HomePage from './Pages/HomePage';
 import MyCandidates from './Pages/MyCandidates';
 import ViewCandidate from './Pages/ViewCandidate';
+import NewCandidate from './Pages/NewCandidate';
 
 const handleRender = ({Component, props}) => {
     if (!Component || !props)
         return <Loading/>;
 
-    // if (!harnessApi.hasAuthToken())
-    //     throw new RedirectException('/auth/?next=' + props.match.location.pathname);
+    if (!harnessApi.hasAuthToken())
+        throw new RedirectException('/auth/?next=' + props.match.location.pathname);
   
     return <Component data={props} {...props}/>;
 };
@@ -51,6 +52,12 @@ function getRoutes() {
                 prepareVariables={(params) => ({
                     candidateId: params.candidateId
                 })}
+                render={handleRender}
+            />
+            <Route
+                path="new-candidate"
+                environment={harnessApi.getEnvironment('gwcandidate')}
+                Component={NewCandidate}
                 render={handleRender}
             />
         </Route>

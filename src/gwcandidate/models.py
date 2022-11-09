@@ -105,6 +105,7 @@ class Candidate(DynamicDocument):
     source = EmbeddedDocumentField(SourceInfo)
 
 
+@update_last_updated.apply
 class CandidateGroup(DynamicDocument):
     created = DateTimeField(default=utc_time)
     last_updated = DateTimeField(default=utc_time)
