@@ -3,10 +3,12 @@ import {Col, Row, Container} from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import initialValues from '../Components/Forms/initialValues';
 import ListForm from '../Components/Forms/ListForm';
+import validationSchema from '../Components/Forms/validationSchema';
 
 const NewCandidate = () => (
     <Formik
         initialValues={initialValues}
+        validationSchema={validationSchema}
     >
         <Container fluid>
             <Form>

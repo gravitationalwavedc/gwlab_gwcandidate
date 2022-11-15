@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormikContext, FieldArray, getIn } from 'formik';
-import { Accordion, Card, Button, Row, Col } from 'react-bootstrap';
+import { Accordion, Card, Button, Row, Col, AccordionContext } from 'react-bootstrap';
 import CandidateForm from './CandidateForm';
-import initialValues from './initialValues';
+import { createCandidate } from './initialValues';
+import Input from './Atoms/Input';
+
+const AccordionToggleInput = ({ eventKey, index }) => {
+    const currentEventKey = useContext(AccordionContext);
+    const { values } = useFormikContext();
+    const isCurrentEventKey = currentEventKey === eventKey;
+
+    const handleClick = e => e.stopPropagation();
+
+    return <>
+        {
+            isCurrentEventKey ? <Input name={`candidates.${index}.name`} onClick={handleClick}/> : getIn(values, `candidates.${index}.name`)
+        }
+    </>;
+};
 
 const ListForm = () => {
     const { values } = useFormikContext();
-    const defaultData = initialValues.candidates[0];
     return <React.Fragment>
         <FieldArray
             name='candidates'
@@ -14,21 +28,26 @@ const ListForm = () => {
                 ({ push, remove }) => <>
                     <Accordion>
                         {
-                            values.candidates.map((_, index) => (
-                                <Card key={index}>
+                            values.candidates.map(({ id }, index) => (
+                                <Card key={id}>
                                     <Accordion.Toggle
                                         as={Card.Header}
-                                        eventKey={index.toString()}
+                                        eventKey={id}
                                         className="border"
                                         data-testid='candidate'
                                     >
                                         <Row>
                                             <Col>
-                                                <div>{getIn(values, `candidates.${index}.source.frequency`)}</div>
+                                                <AccordionToggleInput eventKey={id} index={index} />
                                             </Col>
                                             <Col>
                                                 <Button
-                                                    onClick={() => remove(index)}
+                                                    onClick={
+                                                        e => {
+                                                            e.stopPropagation();
+                                                            remove(index);
+                                                        }
+                                                    }
                                                     data-testid={`remove-candidate-button-${index}`}
                                                     className="float-right"
                                                 >
@@ -37,7 +56,7 @@ const ListForm = () => {
                                             </Col>
                                         </Row>
                                     </Accordion.Toggle>
-                                    <Accordion.Collapse eventKey={index.toString()}>
+                                    <Accordion.Collapse eventKey={id}>
                                         <Card.Body>
                                             <CandidateForm index={index}/>
                                         </Card.Body>
@@ -47,7 +66,7 @@ const ListForm = () => {
                         }
                     </Accordion>
                     <Button
-                        onClick={() => push(defaultData)}
+                        onClick={() => push(createCandidate())}
                         data-testid='add-candidate-button'
                     >
                         Add Candidate
