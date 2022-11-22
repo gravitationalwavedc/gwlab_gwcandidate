@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import Input from './Atoms/Input';
+import NumberInput from './Atoms/NumberInput';
 import Select from './Atoms/Select';
 import CheckGroup from './Atoms/CheckGroup';
 
@@ -44,24 +44,21 @@ const SearchInputs = ({ index }) => <React.Fragment>
     </Row>
     <Row>
         <Col>
-            <Input
+            <NumberInput
                 title='Start time'
                 name={`candidates.${index}.search.startTime`}
-                type='number'
             />
         </Col>
         <Col>
-            <Input
+            <NumberInput
                 title='End time'
                 name={`candidates.${index}.search.endTime`}
-                type='number'
             />
         </Col>
         <Col>
-            <Input
+            <NumberInput
                 title='Detection statistic'
-                name={`candidates.${index}.source.detectionStatistic`}
-                type='number'
+                name={`candidates.${index}.search.detectionStatistic`}
             />
         </Col>
     </Row>

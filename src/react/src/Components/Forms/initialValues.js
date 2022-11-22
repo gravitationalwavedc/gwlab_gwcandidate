@@ -13,17 +13,17 @@ const createCandidate = () => {
             rightAscension: 1.0,
             declination: 1.0,
             frequency: 1.0,
-            frequencyPath: '',
+            frequencyPath: null,
             isBinary: true,
 
             // Binary source inputs
             binary: {
                 semiMajorAxis: 1.0 ,
-                orbitalPhase: '' ,
-                timeOfAscension: '' ,
+                orbitalPhase: null ,
+                timeOfAscension: null ,
                 orbitalPeriod: 1.0 ,
-                orbitalEccentricity: '' ,
-                orbitalArgumentOfPeriapse: '' 
+                orbitalEccentricity: 0 ,
+                orbitalArgumentOfPeriapse: null 
             }
         },
         search: {
@@ -36,11 +36,12 @@ const createCandidate = () => {
             detectionStatistic: 1.0,
 
             other: {
-            // Viterbi specific
-                coherenceTime: 1.0,
-                likelihood: 1.0,
-                score: 1.0,
-                threshold: 1.0
+                viterbi: {
+                    coherenceTime: 1.0,
+                    likelihood: 1.0,
+                    score: 1.0,
+                    threshold: 1.0
+                }
             }
         }
     };

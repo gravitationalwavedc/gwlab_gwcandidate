@@ -1,8 +1,11 @@
 import graphene
 from graphene import relay
+from graphql_relay.node.node import to_global_id
 from graphene_mongo import MongoengineObjectType, MongoengineConnectionField
 
 from .models import Candidate, SearchInfo, ViterbiInfo, SourceInfo, BinaryInfo
+from .types import CandidateInputType
+from .views import create_candidate_group
 from .utils.auth.lookup_users import request_lookup_users
 
 
@@ -51,22 +54,53 @@ class CandidateNode(MongoengineObjectType):
         return parent.last_updated.strftime("%Y-%m-%d %H:%M:%S UTC")
 
 
+class CandidateGroupNode(MongoengineObjectType):
+    class Meta:
+        model = Candidate
+        interfaces = (relay.Node,)
+        required_fields = ('user_id',)
+
+    user = graphene.String()
+    last_updated = graphene.String()
+
+    def resolve_user(parent, info):
+        success, users = request_lookup_users([parent.user_id], info.context.user.user_id)
+        if success and users:
+            return f"{users[0]['firstName']} {users[0]['lastName']}"
+        return "Unknown User"
+
+    def resolve_last_updated(parent, info):
+        return parent.last_updated.strftime("%Y-%m-%d %H:%M:%S UTC")
+
+
 class Query(graphene.ObjectType):
     node = relay.Node.Field()
     candidate = relay.Node.Field(CandidateNode)
     candidates = MongoengineConnectionField(CandidateNode)
 
 
-class TestMutation(relay.ClientIDMutation):
+class CandidatesCreationResult(graphene.ObjectType):
+    group_id = graphene.String()
 
-    result = graphene.String()
+
+class NewCandidatesMutation(relay.ClientIDMutation):
+    class Input:
+        name = graphene.String()
+        description = graphene.String()
+        candidates = graphene.List(CandidateInputType)
+
+    result = graphene.Field(CandidatesCreationResult)
 
     @classmethod
     def mutate_and_get_payload(cls, root, info, **kwargs):
-        return TestMutation(
-            result="Hello Mutation!"
+        candidates = create_candidate_group(info.context.user, **kwargs)
+        # Convert the viterbi job id to a global id
+        group_id = to_global_id("CandidateGroupNode", candidates.id)
+
+        return NewCandidatesMutation(
+            result=CandidatesCreationResult(group_id=group_id)
         )
 
 
 class Mutation(graphene.ObjectType):
-    test_mutation = TestMutation.Field()
+    new_candidates = NewCandidatesMutation.Field()

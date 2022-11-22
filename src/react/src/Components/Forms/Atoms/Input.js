@@ -11,12 +11,12 @@ const Input = ({title, name, type, ...rest}) => {
             title && <Form.Label>{title}</Form.Label>
         }
         <Form.Control
+            {...getFieldProps(name)}
             label={ name }
-            name={ name }
             type={ type } 
             isValid={isTouched && !error}
             isInvalid={!!error}
-            {...getFieldProps(name)} {...rest}/>
+            {...rest}/>
         <Form.Control.Feedback type='invalid'>
             {error}
         </Form.Control.Feedback>

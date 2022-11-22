@@ -4,6 +4,7 @@ from mongoengine.fields import (
     FloatField,
     ListField,
     IntField,
+    BooleanField,
     DateTimeField,
     ReferenceField,
     EmbeddedDocumentField,
@@ -14,23 +15,23 @@ from .utils.misc import validate_name, utc_time
 
 
 SOURCE_DATASET_CHOICES = (
-    'S1',
-    'S2',
-    'S3',
-    'S4',
-    'S5',
-    'S6',
-    'O1',
-    'O2',
-    'O3',
+    ('s1', 'S1'),
+    ('s2', 'S2'),
+    ('s3', 'S3'),
+    ('s4', 'S4'),
+    ('s5', 'S5'),
+    ('s6', 'S6'),
+    ('o1', 'O1'),
+    ('o2', 'O2'),
+    ('o3', 'O3'),
 )
 
 DETECTOR_CHOICES = (
-    'L1',
-    'H1',
-    'V1',
-    'K1',
-    'G1'
+    ('l1', 'L1'),
+    ('h1', 'H1'),
+    ('v1', 'V1'),
+    ('k1', 'K1'),
+    ('g1', 'G1')
 )
 
 MODULE_CHOICES = (
@@ -87,6 +88,7 @@ class SourceInfo(DynamicEmbeddedDocument):
     declination = FloatField(required=True)
     frequency = FloatField(required=True)
     frequency_path = ListField(FloatField())
+    is_binary = BooleanField(required=True)
 
     binary = EmbeddedDocumentField(BinaryInfo)
 
@@ -109,6 +111,8 @@ class Candidate(DynamicDocument):
 class CandidateGroup(DynamicDocument):
     created = DateTimeField(default=utc_time)
     last_updated = DateTimeField(default=utc_time)
-    name = StringField(validation=validate_name)
+    user_id = IntField(required=True)
+
+    name = StringField(validation=validate_name, unique_with="user_id")
     description = StringField()
     candidates = ListField(ReferenceField(Candidate))

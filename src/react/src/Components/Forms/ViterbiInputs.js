@@ -1,35 +1,31 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import Input from './Atoms/Input';
+import NumberInput from './Atoms/NumberInput';
 
 const ViterbiInputs = ({ index }) => <React.Fragment>
     <Row>
         <Col>
-            <Input
+            <NumberInput
                 title='Coherence time'
-                name={`candidates.${index}.other.coherenceTime`}
-                type='number'
+                name={`candidates.${index}.search.other.viterbi.coherenceTime`}
             />
         </Col>
         <Col>
-            <Input
+            <NumberInput
                 title='likelihood'
-                name={`candidates.${index}.other.likelihood`}
-                type='number'
+                name={`candidates.${index}.search.other.viterbi.likelihood`}
             />
         </Col>
         <Col>
-            <Input
+            <NumberInput
                 title='Score'
-                name={`candidates.${index}.other.score`}
-                type='number'
+                name={`candidates.${index}.search.other.viterbi.score`}
             />
         </Col>
         <Col>
-            <Input
+            <NumberInput
                 title='Threshold'
-                name={`candidates.${index}.other.threshold`}
-                type='number'
+                name={`candidates.${index}.search.other.viterbi.threshold`}
             />
         </Col>
     </Row>

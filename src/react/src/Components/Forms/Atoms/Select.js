@@ -4,6 +4,7 @@ import { useFormikContext, getIn } from 'formik';
 
 const Select = ({ title, name, options, ...rest }) => {
     const { values, touched, errors, handleChange } = useFormikContext();
+    const error = getIn(errors, name);
     return <React.Fragment>
         {
             title && <Form.Label>{title}</Form.Label>
@@ -14,8 +15,8 @@ const Select = ({ title, name, options, ...rest }) => {
             as="select"
             value={getIn(values, name)}
             onChange={handleChange}
-            isValid={touched[name] && !errors[name]}
-            isInvalid={!!errors[name]}
+            isValid={getIn(touched, name) && !error}
+            isInvalid={!!error}
             {...rest}
         >
             {options.map(({label, value}) =>

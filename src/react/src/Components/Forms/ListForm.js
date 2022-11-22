@@ -20,7 +20,7 @@ const AccordionToggleInput = ({ eventKey, index }) => {
 };
 
 const ListForm = () => {
-    const { values } = useFormikContext();
+    const { values, handleSubmit } = useFormikContext();
     return <React.Fragment>
         <FieldArray
             name='candidates'
@@ -65,12 +65,24 @@ const ListForm = () => {
                             ))
                         }
                     </Accordion>
-                    <Button
-                        onClick={() => push(createCandidate())}
-                        data-testid='add-candidate-button'
-                    >
-                        Add Candidate
-                    </Button>
+                    <Row>
+                        <Col>
+                            <Button
+                                onClick={() => push(createCandidate())}
+                                data-testid='add-candidate-button'
+                            >
+                                Add Candidate
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button
+                                onClick={handleSubmit}
+                                className='float-right'
+                            >
+                                Create Candidates
+                            </Button>
+                        </Col>
+                    </Row>
                 </>
             }
         />
