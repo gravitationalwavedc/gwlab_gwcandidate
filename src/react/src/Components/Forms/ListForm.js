@@ -26,46 +26,50 @@ const ListForm = () => {
             name='candidates'
             render={
                 ({ push, remove }) => <>
-                    <Accordion>
-                        {
-                            values.candidates.map(({ id }, index) => (
-                                <Card key={id}>
-                                    <Accordion.Toggle
-                                        as={Card.Header}
-                                        eventKey={id}
-                                        className="border"
-                                        data-testid='candidate'
-                                    >
-                                        <Row>
-                                            <Col>
-                                                <AccordionToggleInput eventKey={id} index={index} />
-                                            </Col>
-                                            <Col>
-                                                <Button
-                                                    onClick={
-                                                        e => {
-                                                            e.stopPropagation();
-                                                            remove(index);
-                                                        }
-                                                    }
-                                                    data-testid={`remove-candidate-button-${index}`}
-                                                    className="float-right"
-                                                >
-                                                    Delete
-                                                </Button>
-                                            </Col>
-                                        </Row>
-                                    </Accordion.Toggle>
-                                    <Accordion.Collapse eventKey={id}>
-                                        <Card.Body>
-                                            <CandidateForm index={index}/>
-                                        </Card.Body>
-                                    </Accordion.Collapse>
-                                </Card>
-                            ))
-                        }
-                    </Accordion>
                     <Row>
+                        <Col>
+                            <Accordion>
+                                {
+                                    values.candidates.map(({ id }, index) => (
+                                        <Card key={id}>
+                                            <Accordion.Toggle
+                                                as={Card.Header}
+                                                eventKey={id}
+                                                className="border"
+                                                data-testid='candidate'
+                                            >
+                                                <Row>
+                                                    <Col>
+                                                        <AccordionToggleInput eventKey={id} index={index} />
+                                                    </Col>
+                                                    <Col>
+                                                        <Button
+                                                            onClick={
+                                                                e => {
+                                                                    e.stopPropagation();
+                                                                    remove(index);
+                                                                }
+                                                            }
+                                                            data-testid={`remove-candidate-button-${index}`}
+                                                            className="float-right"
+                                                        >
+                                                    Delete
+                                                        </Button>
+                                                    </Col>
+                                                </Row>
+                                            </Accordion.Toggle>
+                                            <Accordion.Collapse eventKey={id}>
+                                                <Card.Body>
+                                                    <CandidateForm index={index}/>
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                    ))
+                                }
+                            </Accordion>
+                        </Col>
+                    </Row>
+                    <Row className="mt-2">
                         <Col>
                             <Button
                                 onClick={() => push(createCandidate())}

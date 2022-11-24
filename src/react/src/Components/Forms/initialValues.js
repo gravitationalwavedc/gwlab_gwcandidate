@@ -1,6 +1,8 @@
 // You lot can tell me off for this pattern all you want
 var index = 0;
 
+const resetCounter = () => index = 0;
+
 const createCandidate = () => {
     index++;
     return {
@@ -60,4 +62,4 @@ const initialValues = {
 };
 
 export default initialValues;
-export {createCandidate};
+export {createCandidate, resetCounter};

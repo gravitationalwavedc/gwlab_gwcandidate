@@ -41,13 +41,13 @@ let validationSchema = Yup.object().shape({
                             semiMajorAxis: requiredNumber ,
                             orbitalPhase: nullableNumber
                                 .test(
-                                    'Orbital phase or time of ascensino',
+                                    'Orbital phase or time of ascension',
                                     'Specify only one of orbital phase or time of ascension',
                                     (value, {parent}) => !(value && parent.timeOfAscension)
                                 ),
                             timeOfAscension: nullableNumber
                                 .test(
-                                    'Orbital phase or time of ascensino',
+                                    'Orbital phase or time of ascension',
                                     'Specify only one of orbital phase or time of ascension',
                                     (value, {parent}) => !(value && parent.orbitalPhase)
                                 ),
@@ -63,8 +63,8 @@ let validationSchema = Yup.object().shape({
                 module: Yup.string().oneOf(['viterbi']).required(),
                 sourceDataset: Yup.string().oneOf(['o1', 'o2', 'o3', 'o4']).required(),
                 detectors: Yup.array().of(Yup.string().oneOf(['h1', 'l1', 'v1', 'k1', 'g1'])).min(1).required(),
-                startTime: requiredNumber,
-                endTime: requiredNumber,
+                startTime: requiredNumber.lessThan(Yup.ref('endTime'), 'Must be smaller than end time'),
+                endTime: requiredNumber.moreThan(Yup.ref('startTime'), 'Must be greater than start time'),
                 detectionStatistic: requiredNumber,
                 other: Yup.object().when(
                     'module', (searchModule) => {
