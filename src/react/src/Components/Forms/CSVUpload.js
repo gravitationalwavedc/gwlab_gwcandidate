@@ -8,29 +8,32 @@ import _ from 'lodash';
 
 let validationSchema = Yup.array().of(
     Yup.object().shape({
+        name: Yup.string().nullable(),
+        description: Yup.string().nullable(),
+
         rightAscension: Yup.number().nullable(),
         declination: Yup.number().nullable(),
         frequency: Yup.number().nullable(),
-        isBinary: Yup.boolean(),
+        binary: Yup.boolean(),
 
-        semiMajorAxis: Yup.number().nullable() ,
-        orbitalPhase: Yup.number().nullable() ,
-        timeOfAscension: Yup.number().nullable() ,
-        orbitalPeriod: Yup.number().nullable() ,
-        orbitalEccentricity: Yup.number().nullable() ,
-        orbitalArgumentOfPeriapse: Yup.number().nullable(),
+        asini: Yup.number().nullable() ,
+        phiA: Yup.number().nullable() ,
+        tAsc: Yup.number().nullable() ,
+        orbitP: Yup.number().nullable() ,
+        orbitEcc: Yup.number().nullable() ,
+        orbitArgp: Yup.number().nullable(),
 
         module: Yup.string().oneOf(['viterbi']),
         sourceDataset: Yup.string().oneOf(['o1', 'o2', 'o3', 'o4'], '${path} must be in the range O1-4'),
         detectors: Yup.array().of(Yup.string().oneOf(['h1', 'l1', 'v1', 'k1', 'g1'])),
-        startTime: Yup.number().nullable(),
-        endTime: Yup.number().nullable(),
+        tStart: Yup.number().nullable(),
+        tEnd: Yup.number().nullable(),
         detectionStatistic: Yup.number().nullable(),
 
-        coherenceTime: Yup.number().nullable(),
-        likelihood: Yup.number().nullable(),
-        score: Yup.number().nullable(),
-        threshold: Yup.number().nullable()
+        tCoh: Yup.number().nullable(),
+        viterbiLikelihood: Yup.number().nullable(),
+        viterbiScore: Yup.number().nullable(),
+        viterbiThreshold: Yup.number().nullable()
     }).noUnknown(true, 'Unknown column heading: ${unknown}')
 ).min(1, 'Include at least 1 candidate');
 
@@ -43,35 +46,37 @@ const CSVUpload = ({ text }) => {
         const candidates = data.map(candidate => _.merge(
             createCandidate(),
             {
+                name: candidate.name || '',
+                description: candidate.description || '',
                 source: {
                     rightAscension: candidate.rightAscension,
                     declination: candidate.declination,
                     frequency: candidate.frequency,
-                    isBinary: candidate.isBinary,
+                    isBinary: candidate.binary,
             
                     binary: {
-                        semiMajorAxis: candidate.semiMajorAxis,
-                        orbitalPhase: candidate.orbitalPhase,
-                        timeOfAscension: candidate.timeOfAscension,
-                        orbitalPeriod: candidate.orbitalPeriod,
-                        orbitalEccentricity: candidate.orbitalEccentricity,
-                        orbitalArgumentOfPeriapse: candidate.orbitalArgumentOfPeriapse,
+                        semiMajorAxis: candidate.asini,
+                        orbitalPhase: candidate.phiA,
+                        timeOfAscension: candidate.tAsc,
+                        orbitalPeriod: candidate.orbitP,
+                        orbitalEccentricity: candidate.orbitEcc,
+                        orbitalArgumentOfPeriapse: candidate.orbitArgp,
                     }
                 },
                 search: {
                     module: candidate.module,
                     sourceDataset: candidate.sourceDataset,
                     detectors: candidate.detectors,
-                    startTime: candidate.startTime,
-                    endTime: candidate.endTime,
+                    startTime: candidate.tStart,
+                    endTime: candidate.tEnd,
                     detectionStatistic: candidate.detectionStatistic,
             
                     other: {
                         viterbi: {
-                            coherenceTime: candidate.coherenceTime,
-                            likelihood: candidate.likelihood,
-                            score: candidate.score,
-                            threshold: candidate.threshold
+                            coherenceTime: candidate.tCoh,
+                            likelihood: candidate.viterbiLikelihood,
+                            score: candidate.viterbiScore,
+                            threshold: candidate.viterbiThreshold
                         }
                     }
                 }
@@ -91,6 +96,8 @@ const CSVUpload = ({ text }) => {
             }
         }}
         config={{
+            quoteChar: '"',
+            escapeChar: '"',
             skipEmptyLines: true,
             transform: (value, header) => (
                 // Converts detectors column into an array, otherwise preps for dynamic typing
@@ -100,7 +107,7 @@ const CSVUpload = ({ text }) => {
             ),
             dynamicTyping: true,
             header: true,
-            transformHeader: value => value.trim(),
+            transformHeader: value => _.camelCase(value.trim()),
         }}
     >
         {
