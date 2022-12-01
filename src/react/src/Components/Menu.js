@@ -16,8 +16,11 @@ const Menu = () => (
                     <Link className="nav-link" to='/gwcandidate/candidates' exact>
                         Candidates
                     </Link>
-                    <Link className="nav-link" to='/gwcandidate/new-candidate' exact>
-                        New Candidate
+                    <Link className="nav-link" to='/gwcandidate/candidate-groups' exact>
+                        Groups
+                    </Link>
+                    <Link className="nav-link" to='/gwcandidate/new-candidates' exact>
+                        New Candidates
                     </Link>
                 </Nav>
             </Navbar.Collapse>

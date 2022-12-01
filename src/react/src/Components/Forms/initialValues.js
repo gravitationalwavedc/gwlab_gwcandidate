@@ -7,8 +7,8 @@ const createCandidate = () => {
     index++;
     return {
         id: index,
-        name: `Candidate-${index}`,
-        description: 'A good description is specific, unique, and memorable.',
+        name: '',
+        description: '',
 
         source: {
         // General source inputs

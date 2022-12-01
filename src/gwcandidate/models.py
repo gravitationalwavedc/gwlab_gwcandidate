@@ -116,3 +116,7 @@ class CandidateGroup(DynamicDocument):
     name = StringField(validation=validate_name, unique_with="user_id")
     description = StringField()
     candidates = ListField(ReferenceField(Candidate))
+
+    @property
+    def n_candidates(self):
+        return len(self.candidates)

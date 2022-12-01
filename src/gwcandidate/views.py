@@ -18,8 +18,8 @@ def create_candidate(user_id, job_id, name, description, search, source):
         source_info = SourceInfo(**source)
 
     candidate = Candidate(
-        name=name,
-        description=description,
+        name=name or None,
+        description=description or None,
         user_id=user_id,
         job_id=job_id,
         search=search_info,
@@ -32,12 +32,19 @@ def create_candidate(user_id, job_id, name, description, search, source):
 
 
 def create_candidate_group(user, name, description, candidates):
-    candidate_objects = [create_candidate(user.user_id, **c) for c in candidates]
-    candidate_group = CandidateGroup(
-        user_id=user.user_id,
-        name=name,
-        decription=description,
-        candidates=candidate_objects
-    ).save()
+    # Remove any created documents if something breaks
+    try:
+        candidate_objects = []  # Must be defined in case it encounters error in the next step
+        candidate_objects = [create_candidate(user.user_id, **c) for c in candidates]
+        candidate_group = CandidateGroup(
+            user_id=user.user_id,
+            name=name,
+            description=description,
+            candidates=candidate_objects
+        ).save()
+    except Exception:
+        for candidate in candidate_objects:
+            candidate.delete()
+        raise
 
     return candidate_group

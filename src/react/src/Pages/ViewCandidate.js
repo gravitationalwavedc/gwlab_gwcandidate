@@ -17,7 +17,7 @@ const ViewCandidate = ({ data }) => {
                     </Col>
                 </Row>
             </Container></> : 
-            <Error404 message="Job not found" />}
+            <Error404 message="Candidate not found" />}
     </>;
 };
 

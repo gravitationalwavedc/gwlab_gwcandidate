@@ -19,10 +19,17 @@ const submitMutation = graphql`
     }
 `;
 
-const NewCandidate = ({ router }) => {
+const NewCandidates = ({ router }) => {
     const handleSubmit = (values) => {
         const jobId = null;
-        const candidates = values.candidates.map(({id, ...candidate}) => ({...candidate, jobId: jobId}));
+        const candidates = values.candidates.map(
+            ({id, name, description, ...candidate}) => ({
+                ...candidate,
+                name: name || null,
+                description: description || null,
+                jobId: jobId
+            })
+        );
         var variables = {
             input: {
                 name: values.name,
@@ -69,4 +76,4 @@ const NewCandidate = ({ router }) => {
     </Formik>;
 };
 
-export default NewCandidate;
+export default NewCandidates;

@@ -1,18 +1,19 @@
 import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import CandidateTableBody from './CandidateTableBody';
+import CandidateGroupCard from './CandidateGroupCard';
 
-const CandidateTable = ({ data, match, router, hasMore, loadMore }) => (
+const CandidateGroupList = ({ data, match, router, hasMore, loadMore }) => (
     <InfiniteScroll
         dataLength={data.edges.length}
         next={loadMore}
         hasMore={hasMore}
         loader='Scroll to load more...'
+        className="Candidates-container"
     >
         {data.edges.map(({node}) => 
-            <CandidateTableBody key={node.id} node={node} match={match} router={router} />)
+            <CandidateGroupCard key={node.id} node={node} match={match} router={router} />)
         }
     </InfiniteScroll>);
 
-export default CandidateTable;
+export default CandidateGroupList;
 

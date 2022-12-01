@@ -1,12 +1,12 @@
 import React from 'react';
 import {createPaginationContainer, graphql} from 'react-relay';
-import { Container, Col } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 import EmptyTableMessage from '../Components/EmptyTableMessage';
-import CandidateTable from '../Components/CandidateTable';
+import CandidateGroupList from '../Components/CandidateGroupList';
 
 const RECORDS_PER_PAGE = 100;
 
-const MyCandidates = ({data, match, router,relay}) => {
+const MyCandidateGroups = ({data, match, router, relay}) => {
     const loadMore = () => {
         if (relay.hasMore()) {
             relay.loadMore(RECORDS_PER_PAGE);
@@ -15,44 +15,39 @@ const MyCandidates = ({data, match, router,relay}) => {
 
     return (
         <Container >
-            <Col>
-                <h4 className="pt-5 mb-2">
-                    My candidates
-                </h4>
-            </Col>
-            { data.candidates.edges.length > 0 ? <CandidateTable
-                data={data.candidates} 
-                match={match}
-                router={router}
-                hasMore={relay.hasMore()}
-                loadMore={loadMore}
-            /> : <EmptyTableMessage />}
+            <h4 className="pt-5 pt-md-5 mb-0">
+                My candidate groups
+            </h4>
+            <Row>
+                <Col>
+                    { data.candidateGroups.edges.length > 0 ? <CandidateGroupList
+                        data={data.candidateGroups} 
+                        match={match}
+                        router={router}
+                        hasMore={relay.hasMore()}
+                        loadMore={loadMore}
+                    /> : <EmptyTableMessage />}
+                </Col>
+            </Row>
         </Container>
     );
 };
 
-export default createPaginationContainer(MyCandidates,
+export default createPaginationContainer(MyCandidateGroups,
     {
         data: graphql`
-            fragment MyCandidates_data on Query {
-                candidates (
+            fragment MyCandidateGroups_data on Query {
+                candidateGroups (
                     first: $count,
                     after: $cursor,
-                ) @connection(key: "MyCandidates_candidates") {
+                ) @connection(key: "MyCandidateGroups_candidateGroups") {
                     edges {
                         node {
                             id
                             name
                             description
                             user
-                            source {
-                                frequency
-                            }
-                            search {
-                                module
-                                detectionStatistic
-                                sourceDataset
-                            }
+                            nCandidates
                         }
                     }
                   }
@@ -62,11 +57,11 @@ export default createPaginationContainer(MyCandidates,
     {
         direction: 'forward',
         query: graphql`
-            query MyCandidatesForwardQuery(
+            query MyCandidateGroupsForwardQuery(
                 $count: Int!,
                 $cursor: String,
             ) {
-              ...MyCandidates_data
+              ...MyCandidateGroups_data
             }
         `,
         getConnectionFromProps(props) {

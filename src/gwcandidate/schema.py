@@ -3,7 +3,7 @@ from graphene import relay
 from graphql_relay.node.node import to_global_id
 from graphene_mongo import MongoengineObjectType, MongoengineConnectionField
 
-from .models import Candidate, SearchInfo, ViterbiInfo, SourceInfo, BinaryInfo
+from .models import Candidate, CandidateGroup, SearchInfo, ViterbiInfo, SourceInfo, BinaryInfo
 from .types import CandidateInputType
 from .views import create_candidate_group
 from .utils.auth.lookup_users import request_lookup_users
@@ -31,7 +31,6 @@ class SearchInfoType(MongoengineObjectType):
     detectors = graphene.String()
 
     def resolve_detectors(parent, info):
-        print(parent.detectors)
         return ', '.join(parent.detectors)
 
 
@@ -56,12 +55,13 @@ class CandidateNode(MongoengineObjectType):
 
 class CandidateGroupNode(MongoengineObjectType):
     class Meta:
-        model = Candidate
+        model = CandidateGroup
         interfaces = (relay.Node,)
-        required_fields = ('user_id',)
+        required_fields = ('user_id', 'candidates', 'description')
 
     user = graphene.String()
     last_updated = graphene.String()
+    n_candidates = graphene.Int()
 
     def resolve_user(parent, info):
         success, users = request_lookup_users([parent.user_id], info.context.user.user_id)
@@ -77,6 +77,8 @@ class Query(graphene.ObjectType):
     node = relay.Node.Field()
     candidate = relay.Node.Field(CandidateNode)
     candidates = MongoengineConnectionField(CandidateNode)
+    candidate_group = relay.Node.Field(CandidateGroupNode)
+    candidate_groups = MongoengineConnectionField(CandidateGroupNode)
 
 
 class CandidatesCreationResult(graphene.ObjectType):
@@ -93,9 +95,9 @@ class NewCandidatesMutation(relay.ClientIDMutation):
 
     @classmethod
     def mutate_and_get_payload(cls, root, info, **kwargs):
-        candidates = create_candidate_group(info.context.user, **kwargs)
+        candidate_group = create_candidate_group(info.context.user, **kwargs)
         # Convert the viterbi job id to a global id
-        group_id = to_global_id("CandidateGroupNode", candidates.id)
+        group_id = to_global_id("CandidateGroupNode", candidate_group.id)
 
         return NewCandidatesMutation(
             result=CandidatesCreationResult(group_id=group_id)
