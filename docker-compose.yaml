@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  django:
+    build:
+      dockerfile: ./docker/gwlab_gwcandidate_django.Dockerfile
+      context: .
+    image: nexus.gwdc.org.au/docker/gwlab_gwcandidate_django:0.1
+    container_name: gwlab_gwcandidate_django
+    ports:
+      - "8000"
+
+  nginx:
+    build:
+      dockerfile: ./docker/gwlab_gwcandidate_nginx.Dockerfile
+      context: .
+    image: nexus.gwdc.org.au/docker/gwlab_gwcandidate_nginx:0.1
+    container_name: gwlab_gwcandidate_nginx
+    ports:
+      - "8000:8000"
+    depends_on:
+      - static
+      - django
+      
+  static:
+    build:
+      dockerfile: ./docker/gwlab_gwcandidate_static.Dockerfile
+      context: .
+    image: nexus.gwdc.org.au/docker/gwlab_gwcandidate_static:0.1
+    container_name: gwlab_gwcandidate_static
+    ports:
+      - "8000"

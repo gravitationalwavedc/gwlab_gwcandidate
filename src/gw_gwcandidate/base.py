@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import mongoengine
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -172,10 +171,6 @@ FILE_DOWNLOAD_TOKEN_EXPIRY = 60*60*24
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # MONGO DB connection\
-_MONGODB_USER = ""
-_MONGODB_PASSWD = ""
-_MONGODB_HOST = "localhost"
-_MONGODB_NAME = "candidates"
-_MONGODB_PORT = 27017
-
-mongoengine.connect(_MONGODB_NAME, host=_MONGODB_HOST, port=_MONGODB_PORT)
+MONGODB_HOST = "localhost"
+MONGODB_NAME = "candidates"
+MONGODB_PORT = 27017

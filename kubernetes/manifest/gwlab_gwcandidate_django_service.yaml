@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: gwlab-gwcandidate-django
+  name: gwlab-gwcandidate-django
+  namespace: gwcloud
+spec:
+  ports:
+  - name: http
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    name: gwlab-gwcandidate-django
+  sessionAffinity: None
+  type: ClusterIP

@@ -1,23 +1,19 @@
 import os
+import mongoengine
 
-MYSQL_DATABASE = os.getenv('MYSQL_DATABASE')
-MYSQL_HOST = os.getenv('MYSQL_HOST')
-MYSQL_USER = os.getenv('MYSQL_USER')
-MYSQL_ROOT_PASSWORD = os.getenv('MYSQL_ROOT_PASSWORD')
-MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
+MONGODB_USER = os.getenv('MONGODB_USER')
+MONGODB_PASSWD = os.getenv('MONGODB_PASSWD')
+MONGODB_NAME = os.getenv('MONGODB_NAME')
+MONGODB_HOST = os.getenv('MONGODB_HOST')
+MONGODB_PORT = os.getenv('MONGODB_PORT')
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-JOB_CONTROLLER_JWT_SECRET = os.getenv('JOB_CONTROLLER_JWT_SECRET')
 AUTH_SERVICE_JWT_SECRET = os.getenv('AUTH_SERVICE_JWT_SECRET')
-DB_SEARCH_SERVICE_JWT_SECRET = os.getenv('DB_SEARCH_JWT_SECRET_KEY')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': MYSQL_DATABASE,
-        'HOST': MYSQL_HOST,
-        'USER': MYSQL_USER,
-        'PORT': 3306,
-        'PASSWORD': MYSQL_PASSWORD,
-    },
-}
+mongoengine.connect(
+    db=MONGODB_NAME,
+    username=MONGODB_USER,
+    password=MONGODB_PASSWD,
+    host=MONGODB_HOST,
+    port=MONGODB_PORT
+)
