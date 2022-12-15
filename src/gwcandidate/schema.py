@@ -95,9 +95,7 @@ class NewCandidatesMutation(relay.ClientIDMutation):
 
     @classmethod
     def mutate_and_get_payload(cls, root, info, **kwargs):
-        print(kwargs)
         candidate_group = create_candidate_group(info.context.user, **kwargs)
-        print(candidate_group)
         # Convert the viterbi job id to a global id
         group_id = to_global_id("CandidateGroupNode", candidate_group.id)
 
