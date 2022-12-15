@@ -1,3 +1,4 @@
+import mongoengine
 from .base import *
 
 DEBUG = False
@@ -19,3 +20,11 @@ try:
     from .environment import *
 except ImportError:
     pass
+
+mongoengine.connect(
+    db=MONGODB_NAME,
+    username=MONGODB_USER,
+    password=MONGODB_PASSWD,
+    host=MONGODB_HOST,
+    port=MONGODB_PORT
+)

@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: gwlab-gwcandidate-static
-          image: nexus.gwdc.org.au/docker/gwlab_gwcandidate_static:0.1
+          image: nexus.gwdc.org.au/docker/gwlab_gwcandidate_static:0.2
           ports:
             - name: http
               containerPort: 8000

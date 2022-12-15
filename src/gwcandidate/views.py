@@ -11,8 +11,8 @@ def create_candidate(user_id, job_id, name, description, search, source):
         other=other_info or None
     )
 
-    if source.is_binary:
-        binary = source.pop('binary')
+    binary = source.pop('binary', None)
+    if source.is_binary and binary:
         source_info = SourceInfo(**source, binary=BinaryInfo(**binary))
     else:
         source_info = SourceInfo(**source)

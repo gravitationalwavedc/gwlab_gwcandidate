@@ -20,13 +20,17 @@ const MyCandidates = ({data, match, router,relay}) => {
                     My candidates
                 </h4>
             </Col>
-            { data.candidates.edges.length > 0 ? <CandidateTable
-                data={data.candidates} 
-                match={match}
-                router={router}
-                hasMore={relay.hasMore()}
-                loadMore={loadMore}
-            /> : <EmptyTableMessage />}
+            { 
+                data.candidates && data.candidates.edges.length > 0 
+                    ? <CandidateTable
+                        data={data.candidates} 
+                        match={match}
+                        router={router}
+                        hasMore={relay.hasMore()}
+                        loadMore={loadMore}
+                    /> 
+                    : <EmptyTableMessage />
+            }
         </Container>
     );
 };

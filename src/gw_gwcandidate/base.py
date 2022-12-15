@@ -172,5 +172,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # MONGO DB connection\
 MONGODB_HOST = "localhost"
-MONGODB_NAME = "candidates"
+MONGODB_USER = "gwcandidate"
+MONGODB_PASSWD = "gwcandidate"
+MONGODB_NAME = "gwcandidate"
 MONGODB_PORT = 27017
