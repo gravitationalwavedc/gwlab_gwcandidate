@@ -7,7 +7,6 @@ import ListForm from '../Components/Forms/ListForm';
 import validationSchema from '../Components/Forms/validationSchema';
 import CandidatesTitle from '../Components/Forms/CandidatesTitle';
 import { harnessApi } from '../index';
-import CSVUpload from '../Components/Forms/CSVUpload';
 
 const submitMutation = graphql`
     mutation NewCandidatesMutation($input: NewCandidatesMutationInput!) {
@@ -55,19 +54,15 @@ const NewCandidates = ({ router }) => {
         validationSchema={validationSchema}
         onSubmit={values => handleSubmit(values)}
     >
-        <Container fluid>
+        <Container>
             <Form>
-                <Row>
-                    <Col md={{offset:2, span:6}} style={{minHeight: '110px'}}>
+                <Row className="form-title-row">
+                    <Col style={{minHeight: '110px'}}>
                         <CandidatesTitle />
                     </Col>
-                    <Col md={2}>
-                        <CSVUpload text='Upload candidates from CSV'/>
-                    </Col>
                 </Row>
-                <Row />
                 <Row>
-                    <Col md={{offset:2, span:8}}>
+                    <Col>
                         <ListForm />
                     </Col>
                 </Row>

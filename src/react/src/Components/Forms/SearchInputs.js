@@ -23,7 +23,12 @@ const SearchInputs = ({ index }) => <React.Fragment>
                     {label: 'O1', value: 'o1'},
                     {label: 'O2', value: 'o2'},
                     {label: 'O3', value: 'o3'},
-                    {label: 'O4', value: 'o4'}
+                    {label: 'S1', value: 's1'},
+                    {label: 'S2', value: 's2'},
+                    {label: 'S3', value: 's3'},
+                    {label: 'S4', value: 's4'},
+                    {label: 'S5', value: 's5'},
+                    {label: 'S6', value: 's6'}
                 ]}
             />
         </Col>

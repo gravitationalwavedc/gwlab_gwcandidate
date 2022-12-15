@@ -4,8 +4,8 @@ import { AccordionContext } from 'react-bootstrap';
 import Input from './Atoms/Input';
 
 
-const AccordionToggleInput = ({ eventKey, name, emptyText }) => {
-    const { values } = useFormikContext();
+const AccordionToggleInput = ({ eventKey, name, errorName, emptyText }) => {
+    const { values, errors } = useFormikContext();
     const currentEventKey = useContext(AccordionContext);
     const isCurrentEventKey = currentEventKey === eventKey;
 
@@ -15,7 +15,9 @@ const AccordionToggleInput = ({ eventKey, name, emptyText }) => {
         {
             isCurrentEventKey
                 ? <Input name={name} onClick={handleClick}/>
-                : getIn(values, name) || emptyText
+                : <div className={getIn(errors, errorName) ? 'text-danger' : null}>
+                    {getIn(values, name) || emptyText}
+                </div>
         }
     </>;
 };

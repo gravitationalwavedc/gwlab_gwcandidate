@@ -24,7 +24,10 @@ let validationSchema = Yup.array().of(
         orbitArgp: Yup.number().nullable(),
 
         module: Yup.string().oneOf(['viterbi']),
-        sourceDataset: Yup.string().oneOf(['o1', 'o2', 'o3', 'o4'], '${path} must be in the range O1-4'),
+        sourceDataset: Yup.string().oneOf(
+            ['o1', 'o2', 'o3', 's1', 's2', 's3', 's4', 's5', 's6'],
+            '${path} must be in the range O1-3 or S1-6'
+        ),
         detectors: Yup.array().of(Yup.string().oneOf(['h1', 'l1', 'v1', 'k1', 'g1'])),
         tStart: Yup.number().nullable(),
         tEnd: Yup.number().nullable(),
@@ -37,7 +40,7 @@ let validationSchema = Yup.array().of(
     }).noUnknown(true, 'Unknown column heading: ${unknown}')
 ).min(1, 'Include at least 1 candidate');
 
-const CSVUpload = ({ text }) => {
+const CSVUpload = ({ text, buttonProps }) => {
     const { CSVReader } = useCSVReader();
     const { setFieldValue } = useFormikContext();
     const [error, setError] = useState(null);
@@ -112,7 +115,7 @@ const CSVUpload = ({ text }) => {
     >
         {
             ({getRootProps}) => <React.Fragment>
-                <Button {...getRootProps()}>
+                <Button {...getRootProps()} {...buttonProps}>
                     {text}
                 </Button>
                 {error && <p className="text-danger small">{error}</p>}

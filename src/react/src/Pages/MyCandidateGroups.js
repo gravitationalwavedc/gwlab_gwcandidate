@@ -20,13 +20,17 @@ const MyCandidateGroups = ({data, match, router, relay}) => {
             </h4>
             <Row>
                 <Col>
-                    { data.candidateGroups.edges.length > 0 ? <CandidateGroupList
-                        data={data.candidateGroups} 
-                        match={match}
-                        router={router}
-                        hasMore={relay.hasMore()}
-                        loadMore={loadMore}
-                    /> : <EmptyTableMessage />}
+                    {
+                        data.candidateGroups && data.candidateGroups.edges.length > 0 
+                            ? <CandidateGroupList
+                                data={data.candidateGroups} 
+                                match={match}
+                                router={router}
+                                hasMore={relay.hasMore()}
+                                loadMore={loadMore}
+                            />
+                            : <EmptyTableMessage />
+                    }
                 </Col>
             </Row>
         </Container>
