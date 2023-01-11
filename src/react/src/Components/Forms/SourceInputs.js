@@ -1,26 +1,35 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Switch from './Atoms/Switch';
-import NumberInput from './Atoms/NumberInput';
+import Input from './Atoms/Input';
 
 const SourceInputs = ({ index }) => <>
     <Row>
         <Col>
-            <NumberInput
+            <Input
                 title='Right Ascension'
                 name={`candidates.${index}.source.rightAscension`}
+                type='number'
             />
         </Col>
         <Col>
-            <NumberInput
+            <Input
                 title='Declination'
                 name={`candidates.${index}.source.declination`}
+                type='number'
             />
         </Col>
         <Col>
-            <NumberInput
+            <Input
                 title='Frequency'
                 name={`candidates.${index}.source.frequency`}
+                type='number'
+            />
+        </Col>
+        <Col>
+            <Input
+                title='Frequency Path'
+                name={`candidates.${index}.source.frequencyPath`}
             />
         </Col>
     </Row>

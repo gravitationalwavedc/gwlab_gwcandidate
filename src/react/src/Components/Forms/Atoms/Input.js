@@ -1,26 +1,25 @@
 import React from 'react';
-import { useFormikContext, getIn } from 'formik';
+import { useField } from 'formik';
 import { Form } from 'react-bootstrap';
 
 const Input = ({title, name, type, ...rest}) => {
-    const { getFieldProps, touched, errors } = useFormikContext();
-    const error = getIn(errors, name);
-    const isTouched = getIn(touched, name);
+    const [field, {error, touched}] = useField(name);
     return <Form.Group controlId={ name }>
         {
             title && <Form.Label>{title}</Form.Label>
         }
         <Form.Control
-            {...getFieldProps(name)}
+            {...field}
             label={ name }
             type={ type } 
-            isValid={isTouched && !error}
+            isValid={touched && !error}
             isInvalid={!!error}
             {...rest}/>
         <Form.Control.Feedback type='invalid'>
             {error}
         </Form.Control.Feedback>
-    </Form.Group>;};
+    </Form.Group>;
+};
 
 
 export default Input;

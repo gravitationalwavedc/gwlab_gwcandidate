@@ -22,19 +22,20 @@ const NewCandidates = ({ router }) => {
     const handleSubmit = (values) => {
         const jobId = null;
         const candidates = values.candidates.map(
-            ({id, name, description, ...candidate}) => ({
+            ({id, ...candidate}) => ({
                 ...candidate,
-                name: name || null,
-                description: description || null,
                 jobId: jobId
             })
         );
+
+        const input = validationSchema.cast({
+            name: values.name,
+            description: values.description,
+            candidates: candidates
+        });
+
         var variables = {
-            input: {
-                name: values.name,
-                description: values.description,
-                candidates: candidates
-            }
+            input: input
         };
 
         commitMutation(harnessApi.getEnvironment('gwcandidate'), {

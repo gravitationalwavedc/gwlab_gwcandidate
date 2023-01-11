@@ -15,17 +15,17 @@ const createCandidate = () => {
             rightAscension: 1.0,
             declination: 1.0,
             frequency: 1.0,
-            frequencyPath: null,
+            frequencyPath: '',
             isBinary: true,
 
             // Binary source inputs
             binary: {
                 semiMajorAxis: 1.0 ,
-                orbitalPhase: null ,
-                timeOfAscension: null ,
+                orbitalPhase: '' ,
+                timeOfAscension: '' ,
                 orbitalPeriod: 1.0 ,
                 orbitalEccentricity: 0 ,
-                orbitalArgumentOfPeriapse: null 
+                orbitalArgumentOfPeriapse: '' 
             }
         },
         search: {

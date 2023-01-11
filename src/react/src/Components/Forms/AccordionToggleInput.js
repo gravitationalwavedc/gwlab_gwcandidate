@@ -14,7 +14,7 @@ const AccordionToggleInput = ({ eventKey, name, errorName, emptyText }) => {
     return <>
         {
             isCurrentEventKey
-                ? <Input name={name} onClick={handleClick}/>
+                ? <Input name={name} placeholder={emptyText} onClick={handleClick}/>
                 : <div className={getIn(errors, errorName) ? 'text-danger' : null}>
                     {getIn(values, name) || emptyText}
                 </div>

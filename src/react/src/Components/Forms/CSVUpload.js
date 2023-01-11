@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useCSVReader } from 'react-papaparse';
+import { useCSVReader, readString } from 'react-papaparse';
 import { Button } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { useFormikContext } from 'formik';
 import { createCandidate, resetCounter } from './initialValues';
 import _ from 'lodash';
+import { isNaNCorrected } from '../../Utils/misc';
 
 let validationSchema = Yup.array().of(
     Yup.object().shape({
@@ -14,6 +15,11 @@ let validationSchema = Yup.array().of(
         rightAscension: Yup.number().nullable(),
         declination: Yup.number().nullable(),
         frequency: Yup.number().nullable(),
+        frequencyPath: Yup.array()
+            .transform((value, originalValue) => readString(originalValue, {
+                transform: val => isNaNCorrected(val) ? null : val
+            }).data[0])
+            .of(Yup.number()),
         binary: Yup.boolean(),
 
         asini: Yup.number().nullable() ,
@@ -55,6 +61,7 @@ const CSVUpload = ({ text, buttonProps }) => {
                     rightAscension: candidate.rightAscension,
                     declination: candidate.declination,
                     frequency: candidate.frequency,
+                    frequencyPath: candidate.frequencyPath,
                     isBinary: candidate.binary,
             
                     binary: {
