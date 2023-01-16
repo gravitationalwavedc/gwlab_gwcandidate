@@ -19,7 +19,7 @@ const CandidateForm = ({ index }) => {
 
     return <>
         <Row>
-            <Col><Input name={`candidates.${index}.description`} /></Col>
+            <Col><Input name={`candidates.${index}.description`} placeholder="A good description is specific, unique and memorable."/></Col>
         </Row>
         <Tabs fill defaultActiveKey="source" className='border-bottom'>
             <Tab eventKey="source" title="Source">

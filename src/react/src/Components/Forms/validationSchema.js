@@ -1,4 +1,6 @@
 import * as Yup from 'yup';
+import { readString } from 'react-papaparse';
+import { isNaNCorrected } from '../../Utils/misc';
 
 Yup.setLocale({
     mixed: {
@@ -7,32 +9,44 @@ Yup.setLocale({
 });
 
 let requiredNumber = Yup.number()
-    .transform((value) => (isNaN(value) ? undefined : value))
+    .transform((value) => (isNaNCorrected(value) ? undefined : value))
     .typeError('Must be a number')
     .required();
     
 let nullableNumber = Yup.number()
-    .transform((value) => (isNaN(value) ? null : value))
+    .transform((value) => (isNaNCorrected(value) ? null : value))
     .nullable();
 
 let validationSchema = Yup.object().shape({
     name: Yup.string()
-        .min(5, 'Make the title longer than 5 characters.')
-        .max(30, 'Make the title less than 30 characters.')
+        .min(5, 'Make the name longer than 5 characters.')
+        .max(30, 'Make the name less than 30 characters.')
         .matches(/^[0-9a-z_-]+$/i, 'Remove any spaces or special characters.')
         .required(),
     
     candidates: Yup.array().of(
         Yup.object().shape({
             name: Yup.string()
-                .min(5, 'Make the title longer than 5 characters.')
-                .max(30, 'Make the title less than 30 characters.')
-                .matches(/^[0-9a-z_-]+$/i, 'Remove any spaces or special characters.'),
+                .min(5, 'Make the name longer than 5 characters.')
+                .max(30, 'Make the name less than 30 characters.')
+                .matches(/^[0-9a-z_-]+$/i, 'Remove any spaces or special characters.')
+                .transform((value) => (value || null))
+                .nullable(),
+                
+            description: Yup.string()
+                .transform((value) => (value || null))
+                .nullable(),
             
             source: Yup.object().shape({
                 rightAscension: requiredNumber,
                 declination: requiredNumber,
                 frequency: requiredNumber,
+                frequencyPath: Yup.array()
+                    .transform((value, originalValue) => readString(originalValue, {
+                        transform: val => isNaNCorrected(val) ? null : val
+                    }).data[0])
+                    .of(Yup.number())
+                    .default([]),
                 isBinary: Yup.boolean().required(),
                 binary: Yup.object().when(
                     'isBinary', {
@@ -54,7 +68,8 @@ let validationSchema = Yup.object().shape({
                             orbitalPeriod: requiredNumber ,
                             orbitalEccentricity: nullableNumber,
                             orbitalArgumentOfPeriapse: nullableNumber
-                        })
+                        }),
+                        otherwise: Yup.object().shape({}).transform(_val => null).nullable()
                     }
                 )
             }),
