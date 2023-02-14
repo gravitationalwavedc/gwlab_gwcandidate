@@ -2,6 +2,7 @@ import graphene
 from graphene import relay
 from graphql_relay.node.node import to_global_id
 from graphene_mongo import MongoengineObjectType, MongoengineConnectionField
+from mongoengine.dereference import DeReference
 
 from .models import Candidate, CandidateGroup, SearchInfo, ViterbiInfo, SourceInfo, BinaryInfo
 from .types import CandidateInputType
@@ -62,6 +63,7 @@ class CandidateGroupNode(MongoengineObjectType):
     user = graphene.String()
     last_updated = graphene.String()
     n_candidates = graphene.Int()
+    candidates_json = graphene.String()
 
     def resolve_user(parent, info):
         success, users = request_lookup_users([parent.user_id], info.context.user.user_id)
@@ -71,6 +73,10 @@ class CandidateGroupNode(MongoengineObjectType):
 
     def resolve_last_updated(parent, info):
         return parent.last_updated.strftime("%Y-%m-%d %H:%M:%S UTC")
+
+    def resolve_candidates_json(parent, info):
+        candidates = [candidate.to_json() for candidate in DeReference()(parent.candidates)]
+        return f"[{','.join(candidates)}]"
 
 
 class Query(graphene.ObjectType):

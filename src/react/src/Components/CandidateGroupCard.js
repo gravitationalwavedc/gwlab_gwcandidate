@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Container, Row, Col } from 'react-bootstrap';
 import Link from 'found/Link';
-import { HiDocumentText} from 'react-icons/hi';
+import { HiDocumentText, HiCode } from 'react-icons/hi';
 
 const CandidateGroupCard = ({node, match, router}) => <Card className="gwlab-job-card">
     <Card.Body as={Container}>
@@ -23,6 +23,20 @@ const CandidateGroupCard = ({node, match, router}) => <Card className="gwlab-job
         </Row>
     </Card.Body>
     <Card.Footer className="text-right">
+        <Link 
+            to={{
+                pathname: '/cwfollowup/new-job/',
+                state: {candidateGroupId: node.id}
+            }} 
+            activeClassName="selected" 
+            className="card-action"
+            exact 
+            match={match} 
+            router={router}
+        >
+            <HiCode className="mr-1 mb-1" />
+            Run Followups
+        </Link>
         <Link 
             to={{pathname: `/gwcandidate/candidate-group/${node.id}/`}} 
             activeClassName="selected" 
