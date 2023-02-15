@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, createFragmentContainer } from 'react-relay';
-import { Container } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 import Error404 from '../Error404';
 import CandidateHeading from '../Components/Results/CandidateHeading';
 import CandidateTableBody from '../Components/CandidateTableBody';
@@ -12,6 +12,14 @@ const ViewCandidateGroup = ({ data, match, router }) => {
         ? <>
             <CandidateHeading candidateData={candidateGroupData}/>
             <Container className='mt-2'>
+                <Button
+                    onClick={() => router.push({
+                        pathname: '/cwfollowup/new-job',
+                        state: {candidateGroupId: candidateGroupData.id}
+                    })}
+                >
+                    Run Followups
+                </Button>
                 {
                     candidateData.edges.map(({ node }) => <CandidateTableBody
                         key={node.id}
