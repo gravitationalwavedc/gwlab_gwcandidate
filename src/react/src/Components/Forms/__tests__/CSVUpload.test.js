@@ -1,10 +1,8 @@
 import React from 'react';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import 'regenerator-runtime/runtime';
 import CSVUpload from '../CSVUpload';
-import { Formik, Form } from 'formik';
-import initialValues from '../initialValues';
-import userEvent from '@testing-library/user-event';
+import { Formik } from 'formik';
 
 describe('the candidate form component', () => {
     const formikWrapper = ({children}) => <Formik initialValues={{}}>
