@@ -5,7 +5,7 @@ services:
     build:
       dockerfile: ./docker/gwlab_gwcandidate_django.Dockerfile
       context: .
-    image: nexus.gwdc.org.au/docker/gwlab_gwcandidate_django:0.2
+    image: nexus.gwdc.org.au/docker/gwlab_gwcandidate_django:0.3
     container_name: gwlab_gwcandidate_django
     ports:
       - "8000"
@@ -26,7 +26,7 @@ services:
     build:
       dockerfile: ./docker/gwlab_gwcandidate_static.Dockerfile
       context: .
-    image: nexus.gwdc.org.au/docker/gwlab_gwcandidate_static:0.2
+    image: nexus.gwdc.org.au/docker/gwlab_gwcandidate_static:0.3
     container_name: gwlab_gwcandidate_static
     ports:
       - "8000"
