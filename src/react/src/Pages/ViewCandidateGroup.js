@@ -7,7 +7,7 @@ import CandidateTableBody from '../Components/CandidateTableBody';
 
 const ViewCandidateGroup = ({ data, match, router }) => {
     const candidateGroupData = data.candidateGroup || null;
-    const candidateData = candidateGroupData.candidates;
+    const candidateData = candidateGroupData && candidateGroupData.candidates;
     return candidateGroupData 
         ? <>
             <CandidateHeading candidateData={candidateGroupData}/>
